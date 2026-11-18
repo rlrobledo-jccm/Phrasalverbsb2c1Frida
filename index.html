@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e2553f">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<title>Phrasal Verbs B2‑C1 · Linguaskill</title>
+<style>
+:root{
+  --bg:#f6f1e9; --card:#fffdf9; --ink:#1d1b2e; --muted:#6b6880; --line:#e5ddd0;
+  --accent:#e2553f; --accent2:#2f5d8a; --ok:#2e8b57; --bad:#c9372c; --soft:#fbe7e2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:560px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) 16px 60px}
+h1{font-family:Georgia,'Times New Roman',serif;font-weight:800;font-size:30px;line-height:1.05;margin:6px 0 4px}
+h2{font-family:Georgia,'Times New Roman',serif;font-weight:600;font-size:22px;margin:0 0 12px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--soft);padding:4px 8px;border-radius:99px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.progress{height:10px;background:#ece5d9;border-radius:99px;overflow:hidden;margin:10px 0 6px}
+.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#f0a04b);border-radius:99px;transition:width .4s}
+.stats{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.modes{display:grid;gap:10px}
+.mode{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;font:inherit;color:inherit}
+.mode:active{transform:scale(.99)}
+.mode .ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px}
+.mode b{display:block;font-size:16px}
+.mode span{font-size:13px;color:var(--muted)}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:12px;padding:12px 16px;cursor:pointer;background:var(--ink);color:#fff}
+button.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button.btn.ok{background:var(--ok)} button.btn.bad{background:var(--bad)}
+.row{display:flex;gap:10px} .row>*{flex:1}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.back{font:inherit;background:none;border:0;color:var(--muted);cursor:pointer;padding:6px 0;font-size:14px}
+.counter{font-size:13px;color:var(--muted);font-weight:500}
+/* flashcard */
+.flip{perspective:1000px;height:300px;margin-bottom:14px;cursor:pointer}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.face.b{transform:rotateY(180deg);background:#1d1b2e;color:#fff;border-color:#1d1b2e}
+.big{font-family:Georgia,'Times New Roman',serif;font-weight:800;font-size:38px;line-height:1.1}
+.hint{font-size:12px;color:var(--muted);margin-top:14px}
+.es{font-size:22px;font-weight:600;margin-bottom:6px}
+.en{font-size:14px;opacity:.7;margin-bottom:16px;font-style:italic}
+.ex{font-size:16px;line-height:1.5}
+.ex b{color:#f0a04b}
+.qsent{font-size:19px;line-height:1.5;margin:4px 0 6px}
+.qsent b{color:var(--accent)}
+.blank{display:inline-block;min-width:70px;border-bottom:2px solid var(--accent);color:var(--accent);font-weight:700;text-align:center}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{font:inherit;font-size:16px;text-align:left;padding:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;color:var(--ink)}
+.opt.right{border-color:var(--ok);background:#e6f4ec}
+.opt.wrong{border-color:var(--bad);background:#fbe5e3}
+.opt:disabled{cursor:default}
+.feedback{margin-top:12px;font-size:14px;line-height:1.5;padding:12px;border-radius:12px;background:#f3eee5}
+.score{font-family:Georgia,'Times New Roman',serif;font-size:64px;font-weight:800;text-align:center;margin:6px 0}
+.list-item{padding:12px 0;border-bottom:1px solid var(--line)}
+.list-item:last-child{border:0}
+.list-item b{font-size:16px}
+.list-item .m{font-size:14px;color:var(--muted)}
+.list-item .e{font-size:14px;margin-top:4px}
+.list-item .e b{font-size:14px;color:var(--accent)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;background:#d9d1c3}
+.dot.k{background:var(--ok)} .dot.r{background:var(--bad)}
+input.search{width:100%;font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);margin-bottom:12px}
+.seg{display:flex;background:#ece5d9;border-radius:12px;padding:4px;margin-bottom:14px}
+.seg button{flex:1;font:inherit;font-size:13px;font-weight:600;border:0;background:none;padding:8px;border-radius:9px;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.tip{font-size:13px;color:var(--muted);line-height:1.5}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+// [phrasal, español, english definition, example with {particle}]
+const DATA = [
+["bring about","provocar, ocasionar","cause something to happen","The new law brought {about} major changes in the industry."],
+["bring up","sacar (un tema); criar","mention a topic; raise a child","She didn't want to bring the subject {up} at dinner."],
+["bring forward","adelantar (una fecha)","move to an earlier date","The meeting has been brought {forward} to Monday."],
+["call off","cancelar","cancel","The match was called {off} because of the storm."],
+["call for","requerir, exigir","require, demand","This situation calls {for} immediate action."],
+["carry out","llevar a cabo","perform, conduct","The researchers carried {out} a survey of 2,000 students."],
+["come across","encontrar por casualidad; dar la impresión","find by chance; seem","I came {across} some old photos while tidying my room."],
+["come up","surgir","arise unexpectedly","Something urgent has come {up}, so I can't meet you."],
+["come up with","idear, ocurrírsele","think of an idea or plan","We need to come {up with} a better plan."],
+["come down with","caer enfermo de","become ill with","I think I'm coming {down with} a cold."],
+["cut down on","reducir (consumo)","reduce the amount of","Doctors advise cutting {down on} sugar."],
+["deal with","ocuparse de, tratar","handle, manage","The manager dealt {with} the complaint immediately."],
+["do without","prescindir de","manage without","I honestly can't do {without} my phone."],
+["drop out","abandonar (estudios)","leave a course early","He dropped {out} of university in his second year."],
+["end up","acabar (en / haciendo)","finally be in a situation","We got lost and ended {up} in a tiny village."],
+["fall out (with)","pelearse, enfadarse con","argue and stop being friends","She fell {out} with her best friend last summer."],
+["fall through","venirse abajo, fracasar","fail to happen","Our holiday plans fell {through} at the last minute."],
+["figure out","averiguar, entender","understand, solve","I can't figure {out} how this app works."],
+["get across","transmitir, hacer entender","communicate an idea","The speaker struggled to get her message {across}."],
+["get along with","llevarse bien con","have a good relationship with","I get {along with} all my classmates."],
+["get away with","salir impune","escape punishment","He cheated in the test and got {away with} it."],
+["get over","superar, recuperarse de","recover from","It took her months to get {over} the break-up."],
+["get round to","encontrar tiempo para","finally do something","I never got {round to} replying to his email."],
+["get by","apañárselas","manage with little","She gets {by} on a very small salary."],
+["give in","ceder, rendirse","stop resisting","After hours of arguing, his parents finally gave {in}."],
+["give up","dejar (de hacer), rendirse","stop doing, quit","She gave {up} smoking last year."],
+["go along with","aceptar, estar de acuerdo con","agree with, accept","I'll go {along with} whatever you decide."],
+["go through","pasar por; revisar","experience; examine","The country is going {through} a difficult period."],
+["go off","sonar (alarma); estropearse","ring; go bad","My alarm didn't go {off} this morning."],
+["hold back","contener; frenar","restrain; prevent progress","Fear of failure held her {back} for years."],
+["keep up with","seguir el ritmo de","stay at the same level as","It's hard to keep {up with} the latest technology."],
+["let down","decepcionar, fallar","disappoint","I promised to help and I won't let you {down}."],
+["look down on","menospreciar","think you are better than","He looks {down on} people who didn't go to university."],
+["look forward to","tener ganas de","anticipate with pleasure","I'm really looking {forward to} the summer holidays."],
+["look into","investigar","investigate","The police are looking {into} the robbery."],
+["look up to","admirar","admire, respect","She has always looked {up to} her older sister."],
+["look out","tener cuidado","be careful","Look {out}! There's a car coming!"],
+["make out","distinguir, entender","see or hear with difficulty","I couldn't make {out} what he was saying."],
+["make up","inventar; reconciliarse","invent; become friends again","He made {up} an excuse for being late."],
+["make up for","compensar","compensate for","She worked extra hours to make {up for} the lost time."],
+["pass away","fallecer","die (polite)","His grandfather passed {away} last year."],
+["point out","señalar, hacer notar","draw attention to","The teacher pointed {out} several mistakes in my essay."],
+["put across","transmitir (ideas)","communicate clearly","He put his ideas {across} very clearly."],
+["put off","aplazar; desanimar","postpone; discourage","Don't put {off} your homework until tomorrow."],
+["put up with","aguantar, soportar","tolerate","I can't put {up with} this noise any longer."],
+["rule out","descartar","exclude a possibility","Doctors have ruled {out} a serious infection."],
+["run out of","quedarse sin","have no more of","We've run {out of} milk again."],
+["run into","toparse con (alguien)","meet by chance","I ran {into} my old teacher at the supermarket."],
+["run up against","toparse con (un problema)","encounter a difficulty","The project ran {up against} serious funding problems."],
+["set up","montar, fundar","establish","They set {up} their own company in 2020."],
+["set off","salir (de viaje); provocar","start a journey; trigger","We set {off} early to avoid the traffic."],
+["settle down","asentarse; calmarse","start a stable life; calm down","They want to settle {down} and buy a house."],
+["sort out","resolver, arreglar","solve, organise","Don't worry, we'll sort it {out}."],
+["stand for","significar; tolerar","represent; tolerate","“EU” stands {for} European Union."],
+["stand out","destacar","be easily noticed","Her application stood {out} from the rest."],
+["take after","parecerse a (un familiar)","resemble a relative","He really takes {after} his father."],
+["take on","asumir; contratar","accept responsibility; employ","She took {on} too much work this term."],
+["take over","hacerse cargo, tomar el control","gain control of","A big firm took {over} the small bakery."],
+["take up","empezar (una afición); ocupar","start a hobby; occupy","I took {up} yoga to reduce stress."],
+["take in","asimilar; engañar","absorb information; deceive","There was too much information to take {in}."],
+["turn down","rechazar; bajar (volumen)","reject; lower","She turned {down} the job offer."],
+["turn out","resultar","prove to be","The film turned {out} to be really good."],
+["work out","resolver; hacer ejercicio; salir bien","solve; exercise; succeed","Don't worry, things will work {out} in the end."],
+["back up","respaldar; hacer copia de seguridad","support; copy data","Can you back {up} your claims with evidence?"],
+["break down","averiarse; derrumbarse","stop working; lose control","Our car broke {down} on the motorway."],
+["break into","entrar a robar","enter by force","Someone broke {into} our neighbours' house last night."],
+["break out","estallar","start suddenly (war, fire)","A fire broke {out} in the school kitchen."],
+["brush up on","repasar, refrescar","improve a forgotten skill","I need to brush {up on} my English before the exam."],
+["catch up","ponerse al día","reach the same level","I missed a week of classes and need to catch {up}."],
+["count on","contar con","rely on","You can always count {on} me."],
+["face up to","afrontar","accept and deal with","You have to face {up to} your responsibilities."],
+["fill in","rellenar; sustituir","complete a form; replace","Please fill {in} this application form."],
+["hand in","entregar","submit","Please hand {in} your essays by Friday."],
+["iron out","limar (problemas)","resolve small problems","We still need to iron {out} a few details."],
+["kick off","empezar, arrancar","start","The conference kicks {off} at 9 a.m."],
+["lay off","despedir (por falta de trabajo)","dismiss workers","The factory laid {off} 200 workers."],
+["live up to","estar a la altura de","meet expectations","The hotel didn't live {up to} our expectations."],
+["opt out (of)","optar por no participar","choose not to take part","You can opt {out} of the newsletter at any time."],
+["own up (to)","confesar, admitir","admit doing something wrong","Nobody owned {up} to breaking the window."],
+["phase out","eliminar gradualmente","gradually stop using","The government plans to phase {out} petrol cars."],
+["pick up","aprender (sin esfuerzo); recoger","learn casually; collect","I picked {up} some Italian while living in Rome."],
+["pull off","lograr (algo difícil)","succeed in something difficult","Nobody thought they could win, but they pulled it {off}."],
+["see through","calar, no dejarse engañar","not be deceived by","She saw {through} his lies immediately."],
+["show off","presumir, fardar","try to impress others","He's always showing {off} his new trainers."],
+["stick to","ceñirse a, mantener","continue with, not change","Stick {to} the plan and you'll be fine."],
+["talk into","convencer para","persuade to do","She talked me {into} going to the party."],
+["think over","pensarse, reflexionar","consider carefully","I'll think it {over} and let you know tomorrow."],
+["throw away","tirar; desperdiciar","discard; waste","Don't throw {away} that box, it might be useful."],
+["try out","probar","test","I can't wait to try {out} my new camera."],
+["wear off","pasarse (un efecto)","gradually disappear","The effect of the painkiller is wearing {off}."],
+["wear out","agotar; desgastar","exhaust; damage by use","The long journey wore me {out}."],
+["weigh up","sopesar","consider pros and cons","You should weigh {up} the pros and cons before deciding."]
+].map((d,i)=>({id:i,pv:d[0],es:d[1],en:d[2],ex:d[3],verb:d[0].split(" ")[0],part:d[3].match(/\{(.+?)\}/)[1]}));
+
+// ---------- state ----------
+const KEY="pv-linguaskill-v1";
+let S={known:{},miss:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s)S=Object.assign(S,s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s);
+const app=$("#app");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const filled=d=>esc(d.ex).replace(/\{(.+?)\}/,"<b>$1</b>");
+const gapped=d=>esc(d.ex).replace(/\{(.+?)\}/,'<span class="blank" id="blank">&nbsp;?&nbsp;</span>');
+const knownCount=()=>Object.keys(S.known).length;
+const reviewIds=()=>Object.keys(S.miss).filter(k=>S.miss[k]>0).map(Number);
+
+// ---------- home ----------
+function home(){
+  const k=knownCount(), r=reviewIds().length, pct=Math.round(k/DATA.length*100);
+  app.innerHTML=`
+  <span class="tag">Linguaskill · B2–C1</span>
+  <h1>Phrasal Verbs</h1>
+  <p class="sub">${DATA.length} phrasal verbs que salen mucho en Reading y Listening.</p>
+  <div class="card">
+    <div class="stats"><span><b style="color:var(--ink)">${k}</b> dominados</span><span>${pct}%</span></div>
+    <div class="progress"><i style="width:${pct}%"></i></div>
+    <div class="stats"><span>${r} para repasar</span><span>${DATA.length-k} pendientes</span></div>
+  </div>
+  <div class="modes">
+    <button class="mode" onclick="flash()"><div class="ic" style="background:#fde6d6">🃏</div><div><b>Tarjetas</b><span>Gira la tarjeta y marca si te lo sabías</span></div></button>
+    <button class="mode" onclick="gapQuiz()"><div class="ic" style="background:#dbe8f4">✍️</div><div><b>Completa la frase</b><span>Elige la partícula correcta (estilo examen)</span></div></button>
+    <button class="mode" onclick="meaningQuiz()"><div class="ic" style="background:#e1f0e6">🎯</div><div><b>¿Qué significa?</b><span>Relaciona phrasal verb y significado</span></div></button>
+    <button class="mode" onclick="gapQuiz(true)" ${r?"":"disabled style='opacity:.5'"}><div class="ic" style="background:#fbe5e3">🔁</div><div><b>Repasar fallos</b><span>${r?`${r} phrasal verbs que se te han resistido`:"Aún no hay fallos guardados"}</span></div></button>
+    <button class="mode" onclick="list()"><div class="ic" style="background:#efe8f7">📚</div><div><b>Lista completa</b><span>Busca y consulta todos con ejemplos</span></div></button>
+  </div>
+  <p class="tip" style="margin-top:18px">💡 Truco: en Linguaskill suelen aparecer en huecos de <i>Reading</i> (“Gapped sentences” y “Multiple-choice gap-fill”). Fíjate en la preposición final: <i>put up <b>with</b></i>, <i>look forward <b>to</b></i>…</p>
+  <p style="text-align:center;margin-top:20px"><button class="back" onclick="resetAll()">Reiniciar progreso</button></p>`;
+}
+function resetAll(){
+  app.insertAdjacentHTML("beforeend",`<div class="card" id="conf"><p style="margin-top:0">¿Seguro que quieres borrar todo el progreso?</p><div class="row"><button class="btn ghost" onclick="$('#conf').remove()">No</button><button class="btn bad" onclick="S={known:{},miss:{}};save();home()">Sí, borrar</button></div></div>`);
+  $("#conf").scrollIntoView({behavior:"smooth"});
+}
+
+// ---------- flashcards ----------
+let F={deck:[],i:0,filter:"pend"};
+function flash(filter){
+  if(filter)F.filter=filter;
+  let pool=DATA;
+  if(F.filter==="pend")pool=DATA.filter(d=>!S.known[d.id]);
+  if(F.filter==="rev")pool=DATA.filter(d=>S.miss[d.id]>0);
+  if(!pool.length&&F.filter!=="all")pool=DATA;
+  F.deck=shuffle(pool);F.i=0;renderFlash();
+}
+function renderFlash(){
+  const d=F.deck[F.i];
+  if(!d){app.innerHTML=`<div class="top"><button class="back" onclick="home()">← Inicio</button></div><div class="card" style="text-align:center"><div class="score">🎉</div><h2>¡Mazo terminado!</h2><p class="sub">Llevas ${knownCount()} de ${DATA.length} dominados.</p><div class="row"><button class="btn ghost" onclick="home()">Inicio</button><button class="btn" onclick="flash()">Otra vuelta</button></div></div>`;return}
+  app.innerHTML=`
+  <div class="top"><button class="back" onclick="home()">← Inicio</button><span class="counter">${F.i+1} / ${F.deck.length}</span></div>
+  <div class="seg">
+    <button class="${F.filter==='pend'?'on':''}" onclick="flash('pend')">Pendientes</button>
+    <button class="${F.filter==='rev'?'on':''}" onclick="flash('rev')">Fallados</button>
+    <button class="${F.filter==='all'?'on':''}" onclick="flash('all')">Todos</button>
+  </div>
+  <div class="flip" id="fl" onclick="this.classList.toggle('on')">
+    <div class="flip-in">
+      <div class="face"><div class="big">${esc(d.pv)}</div><div class="hint">Toca para ver el significado</div></div>
+      <div class="face b"><div class="es">${esc(d.es)}</div><div class="en">${esc(d.en)}</div><div class="ex">${filled(d)}</div></div>
+    </div>
+  </div>
+  <div class="row">
+    <button class="btn bad" onclick="mark(false)">✗ Repasar</button>
+    <button class="btn ok" onclick="mark(true)">✓ Me lo sé</button>
+  </div>`;
+}
+function mark(ok){
+  const d=F.deck[F.i];
+  if(ok){S.known[d.id]=1;if(S.miss[d.id])S.miss[d.id]=Math.max(0,S.miss[d.id]-1)}
+  else{delete S.known[d.id];S.miss[d.id]=(S.miss[d.id]||0)+1}
+  save();F.i++;renderFlash();
+}
+
+// ---------- quizzes ----------
+const ROUND=10;
+let Q={items:[],i:0,score:0,wrong:[],type:"gap"};
+const allParts=[...new Set(DATA.map(d=>d.part))];
+function partOptions(d){
+  const n=d.part.split(" ").length;
+  const banned=new Set(DATA.filter(x=>x.verb===d.verb).map(x=>x.part)); // avoid other valid combos with same verb
+  let pool=allParts.filter(p=>!banned.has(p)&&p.split(" ").length===n);
+  if(pool.length<3)pool=allParts.filter(p=>!banned.has(p));
+  return shuffle([d.part,...shuffle(pool).slice(0,3)]);
+}
+function gapQuiz(review){
+  let pool=review?DATA.filter(d=>S.miss[d.id]>0):DATA;
+  Q={items:shuffle(pool).slice(0,ROUND),i:0,score:0,wrong:[],type:"gap",review:!!review};
+  renderQ();
+}
+function meaningQuiz(){
+  Q={items:shuffle(DATA).slice(0,ROUND),i:0,score:0,wrong:[],type:"mean"};
+  renderQ();
+}
+function renderQ(){
+  const d=Q.items[Q.i];
+  if(!d)return results();
+  let body="",opts=[],correct;
+  if(Q.type==="gap"){
+    opts=partOptions(d);correct=d.part;
+    body=`<p class="tip" style="margin:0 0 8px">Elige la(s) palabra(s) que faltan:</p><div class="qsent">${gapped(d)}</div>`;
+  }else{
+    const reverse=Math.random()<.5;
+    const others=shuffle(DATA.filter(x=>x.id!==d.id)).slice(0,3);
+    if(reverse){
+      body=`<p class="tip" style="margin:0 0 8px">¿Qué phrasal verb significa…?</p><div class="qsent"><b>${esc(d.es)}</b></div><div class="tip"><i>${esc(d.en)}</i></div>`;
+      opts=shuffle([d,...others]).map(x=>x.pv);correct=d.pv;
+    }else{
+      body=`<p class="tip" style="margin:0 0 8px">¿Qué significa en esta frase?</p><div class="qsent">${filled(d)}</div>`;
+      opts=shuffle([d,...others]).map(x=>x.es);correct=d.es;
+    }
+  }
+  app.innerHTML=`
+  <div class="top"><button class="back" onclick="home()">← Inicio</button><span class="counter">${Q.i+1} / ${Q.items.length} · ✓ ${Q.score}</span></div>
+  <div class="progress" style="margin-top:0"><i style="width:${Q.i/Q.items.length*100}%"></i></div>
+  <div class="card" style="margin-top:12px">${body}
+    <div class="opts">${opts.map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>
+    <div id="fb"></div>
+  </div>`;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(b,correct,d));
+}
+function answer(btn,correct,d){
+  const ok=btn.dataset.v===correct;
+  app.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(b.dataset.v===correct)b.classList.add("right")});
+  if(!ok)btn.classList.add("wrong");
+  const bl=$("#blank");if(bl){bl.textContent=d.part;bl.style.color=ok?"var(--ok)":"var(--bad)";bl.style.borderColor=bl.style.color}
+  if(ok){Q.score++;if(S.miss[d.id])S.miss[d.id]--;}
+  else{Q.wrong.push(d);S.miss[d.id]=(S.miss[d.id]||0)+1;delete S.known[d.id]}
+  save();
+  $("#fb").innerHTML=`<div class="feedback">${ok?"✅ ¡Correcto!":"❌ Era <b>"+esc(correct)+"</b>."}<br><b>${esc(d.pv)}</b> = ${esc(d.es)}<br><span class="tip">${filled(d)}</span></div>
+  <button class="btn" style="width:100%;margin-top:12px" id="nx">${Q.i+1<Q.items.length?"Siguiente →":"Ver resultado"}</button>`;
+  $("#nx").onclick=()=>{Q.i++;renderQ()};
+  $("#nx").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function results(){
+  const n=Q.items.length,p=Q.score/n;
+  const msg=p===1?"¡Perfecto! 🏆":p>=.8?"¡Muy bien! Nivel C1 a la vista 💪":p>=.6?"Bien, sigue así 👍":"Hay que repasar un poco más 📖";
+  app.innerHTML=`
+  <div class="top"><button class="back" onclick="home()">← Inicio</button></div>
+  <div class="card" style="text-align:center"><div class="score">${Q.score}/${n}</div><h2>${msg}</h2>
+    <div class="row" style="margin-top:8px"><button class="btn ghost" onclick="home()">Inicio</button><button class="btn" onclick="${Q.type==='gap'?`gapQuiz(${Q.review})`:'meaningQuiz()'}">Otra ronda</button></div>
+  </div>
+  ${Q.wrong.length?`<div class="card"><h2>Para repasar</h2>${Q.wrong.map(d=>`<div class="list-item"><b>${esc(d.pv)}</b> <span class="m">· ${esc(d.es)}</span><div class="e">${filled(d)}</div></div>`).join("")}</div>`:""}`;
+}
+
+// ---------- list ----------
+function list(){
+  app.innerHTML=`
+  <div class="top"><button class="back" onclick="home()">← Inicio</button><span class="counter"><span class="dot k"></span>dominado <span class="dot r" style="margin-left:8px"></span>a repasar</span></div>
+  <input class="search" id="q" placeholder="Buscar (inglés o español)…" autocomplete="off">
+  <div class="card" id="li"></div>`;
+  const draw=()=>{
+    const q=$("#q").value.toLowerCase().trim();
+    const rows=DATA.filter(d=>!q||(d.pv+" "+d.es+" "+d.en).toLowerCase().includes(q)).sort((a,b)=>a.pv.localeCompare(b.pv));
+    $("#li").innerHTML=rows.length?rows.map(d=>`<div class="list-item"><span class="dot ${S.known[d.id]?'k':S.miss[d.id]>0?'r':''}"></span><b>${esc(d.pv)}</b> <span class="m">· ${esc(d.es)}</span><div class="m" style="font-style:italic">${esc(d.en)}</div><div class="e">${filled(d)}</div></div>`).join(""):'<p class="tip">Sin resultados.</p>';
+  };
+  $("#q").oninput=draw;draw();
+}
+
+home();
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+</script>
+</body>
+</html>
